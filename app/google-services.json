@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "190280020476",
+    "project_id": "uaspraktikummobile",
+    "storage_bucket": "uaspraktikummobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190280020476:android:1b0f62b81fdb6936478279",
+        "android_client_info": {
+          "package_name": "com.example.uaspraktikummobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbhKLR2BnDltDlWmnwrhxLL4c4U0zD-YY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
