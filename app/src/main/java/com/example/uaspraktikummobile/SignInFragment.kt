@@ -8,8 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
-import com.example.uaspraktikummobile.databinding.ActivitySignInBinding
 import com.example.uaspraktikummobile.databinding.FragmentSignInBinding
+import com.example.uaspraktikummobile.helper.Constant
+import com.example.uaspraktikummobile.helper.PreferencesHelper
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -32,7 +33,7 @@ class SignInFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private lateinit var UsernameEdit: TextInputEditText
     private lateinit var PasswordEdit: TextInputEditText
-
+    lateinit var sharedPref: PreferencesHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class SignInFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        sharedPref = PreferencesHelper(requireContext())
     }
 
     override fun onCreateView(
@@ -71,10 +73,28 @@ class SignInFragment : Fragment() {
                     .addOnSuccessListener { task ->
                         if (!task.isEmpty) {
                             // User exists and password matches
-                            val intentAdmin = Intent(requireContext(), MainActivityAdmin::class.java)
-                            startActivity(intentAdmin)
-                            Toast.makeText(requireContext(), "Sign In Successfully.", Toast.LENGTH_SHORT).show()
-                            requireActivity().finish()
+                            val userDocument = task.documents[0] // Assuming there's only one matching document
+                            val storedPassword = userDocument.getString("password")
+                            val isAdmin = userDocument.getBoolean("isAdmin") ?: true
+
+                            if (pw == storedPassword) {
+                                // Password matches, proceed with login
+                                if (isAdmin) {
+                                    // User is an admin, proceed with admin activity
+                                    val intentAdmin = Intent(requireContext(), MainActivityAdmin::class.java)
+                                    startActivity(intentAdmin)
+                                    Toast.makeText(requireContext(), "Admin Sign In Successfully.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // shared
+                                    saveSession(usernameEdit.text.toString(), passwordEdit.text.toString())
+                                    val intentRegular = Intent(requireContext(), MainActivity::class.java)
+                                    startActivity(intentRegular)
+                                    Toast.makeText(requireContext(), "User Sign In Successfully.", Toast.LENGTH_SHORT).show()
+                                }
+                            } else {
+                                // Password doesn't match
+                                Toast.makeText(requireContext(), "Sign In Failed, Password doesn't match in our system", Toast.LENGTH_SHORT).show()
+                            }
                         } else {
                             // User does not exist or password doesn't match
                             Toast.makeText(requireContext(), "Sign In Failed, Password doesn't match in our system", Toast.LENGTH_SHORT).show()
@@ -95,6 +115,22 @@ class SignInFragment : Fragment() {
             viewPager.currentItem = signUpTabIndex
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        // pengecekan apakah udh login
+        if (sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
+            startActivity(Intent(requireContext(), MainActivity::class.java))
+            requireActivity().finish()
+        }
+    }
+
+    private fun saveSession(username: String, password: String) {
+        sharedPref.put(Constant.PREF_USERNAME, username)
+        sharedPref.put(Constant.PREF_PASSWORD, password)
+        sharedPref.put(Constant.PREF_IS_LOGIN, true)
+    }
+
 
     companion object {
         /**

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
-import com.example.uaspraktikummobile.databinding.ActivitySignUpBinding
 import com.example.uaspraktikummobile.databinding.FragmentSignInBinding
 import com.example.uaspraktikummobile.databinding.FragmentSignUpBinding
 import com.google.firebase.firestore.FirebaseFirestore
@@ -78,13 +77,14 @@ class SignUpFragment : Fragment() {
                                 "fullname" to etFullName.text.toString(),
                                 "email" to etEmail.text.toString(),
                                 "password" to etPassword.text.toString(),
-                                "isAdmin" to "false"
+                                "isAdmin" to "false".toBoolean()
                             )
                         )
                         .addOnSuccessListener {
                             Toast.makeText(requireContext(), "Sign Up Success", Toast.LENGTH_SHORT)
                                 .show()
-                            val intentSignUp = Intent(requireContext(), SignIn::class.java)
+
+                            val intentSignUp = Intent(requireContext(), MainActivity::class.java)
                             etUsername.setText("")
                             etFullName.setText("")
                             etEmail.setText("")
