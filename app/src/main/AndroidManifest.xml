@@ -13,19 +13,19 @@
         android:theme="@style/Theme.UASPraktikumMobile"
         tools:targetApi="31">
         <activity
-            android:name=".SignIn"
+            android:name=".AddMoviesActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivityAdmin"
+            android:name=".EditMoviesActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUp"
+            android:name=".LoginActivityFragment"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivityFragment"
+            android:name=".MainActivityAdmin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

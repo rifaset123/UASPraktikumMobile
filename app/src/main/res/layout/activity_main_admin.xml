@@ -4,15 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/netflix_black"
     tools:context=".MainActivityAdmin">
-    <TextView
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/roundedImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="welcome Admin!"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:maxWidth="42dp"
+        android:maxHeight="42dp"
+        android:src="@drawable/logo_notflix_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TextWelcomeAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_bold"
+        android:text="Welcome Admin!"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="50dp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roundedImageView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/MyRecyclerView"
+        android:layout_width="409dp"
+        android:layout_height="633dp"
+        app:layout_constraintBottom_toTopOf="@+id/BottomHelper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextWelcomeAdmin"
+        android:layout_marginTop="70dp"
+        tools:listitem="@layout/item_container_movies_admin" />
+
+    <View
+        android:id="@+id/BottomHelper"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/netflix_black"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ButtonAddMovie"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/button_plus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.453"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.475" />
+        app:layout_constraintTop_toTopOf="@+id/BottomHelper" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
