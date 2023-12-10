@@ -17,10 +17,8 @@ import java.text.SimpleDateFormat
 class AddMoviesActivity : AppCompatActivity() {
     private lateinit var bindingAddMovies: ActivityAddMoviesBinding
     private var imageUri: Uri? = null
-    private var downloadURL: String? = ""
     private var store: StorageReference? = null
     private val db = FirebaseFirestore.getInstance()
-    private val imagesReference : StorageReference = FirebaseStorage.getInstance().getReference("Images")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_movies)
@@ -40,17 +38,25 @@ class AddMoviesActivity : AppCompatActivity() {
 
         with(bindingAddMovies) {
             ButtonSubmitMovie.setOnClickListener {
-                uploadData()
+                if (!isAllFieldsFilled()) {
+                    Toast.makeText(this@AddMoviesActivity, "Please fill all fields including image", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                else{
+                    uploadData()
+                }
             }
         }
     }
 
     // fungsi terkait CRUD
-    private fun setEmptyField() { // fungsi untuk mengosongkan et
+    private fun isAllFieldsFilled(): Boolean {
         with(bindingAddMovies) {
-            EditMovieTitle.setText("")
-            EditMovieDescription.setText("")
-            EditMovieRating.setText("")
+            return EditMovieTitle.text?.isNotBlank() == true &&
+                    EditMovieDirector.text?.isNotBlank() == true &&
+                    EditMovieRating.text?.isNotBlank() == true &&
+                    EditMovieDescription.text?.isNotBlank() == true &&
+                    imageUri != null
         }
     }
     private fun addMovie(movie: Movies) {
@@ -117,15 +123,7 @@ class AddMoviesActivity : AppCompatActivity() {
                 }
             }
     }
-
-//        val imageRef = store?.child("image" + imageUri?.lastPathSegment)
-//        val uploadTask = imageRef?.putFile(imageUri!!)
-//        uploadTask?.addOnFailureListener {
-//            // Handle unsuccessful uploads
-//        }?.addOnSuccessListener {
-//            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-//            // ...
-//        }
+    // nyambungin request code ke image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -134,5 +132,4 @@ class AddMoviesActivity : AppCompatActivity() {
             bindingAddMovies.imageMovie.setImageURI(imageUri)
         }
     }
-
 }

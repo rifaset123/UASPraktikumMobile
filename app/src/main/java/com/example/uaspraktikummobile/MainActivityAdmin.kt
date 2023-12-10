@@ -101,28 +101,26 @@ class MainActivityAdmin : AppCompatActivity() {
             }
     }
 
-
-
-    private fun loadImagesPath() {
-        for (movie in listReports) {
-            val imagePath = movie.imagePath
-            val imageRV: ImageView = findViewById(R.id.imageMovieDisplay)
-
-            // Construct the StorageReference for the image
-            val imageRef = store?.child(imagePath)
-
-            // Download the image and load it into your app (you can use any image loading library here)
-            imageRef?.downloadUrl?.addOnSuccessListener { uri ->
-                // The image URL is available in the 'uri' variable
-                val imageUrl = uri.toString()
-                // Gunakan Glide untuk memuat gambar ke RoundedImageView
-                Glide.with(this)
-                    .load(imageUrl)
-                    .into(imageRV)
-            }?.addOnFailureListener {
-                // Handle failure
-                Log.d("MainActivity", "Error downloading image: $it")
-            }
-        }
-    }
+//    private fun loadImagesPath() {
+//        for (movie in listReports) {
+//            val imagePath = movie.imagePath
+//            val imageRV: ImageView = findViewById(R.id.imageMovieDisplay)
+//
+//            // Construct the StorageReference for the image
+//            val imageRef = store?.child(imagePath)
+//
+//            // Download the image and load it into your app (you can use any image loading library here)
+//            imageRef?.downloadUrl?.addOnSuccessListener { uri ->
+//                // The image URL is available in the 'uri' variable
+//                val imageUrl = uri.toString()
+//                // Gunakan Glide untuk memuat gambar ke RoundedImageView
+//                Glide.with(this)
+//                    .load(imageUrl)
+//                    .into(imageRV)
+//            }?.addOnFailureListener {
+//                // Handle failure
+//                Log.d("MainActivity", "Error downloading image: $it")
+//            }
+//        }
+//    }
 }

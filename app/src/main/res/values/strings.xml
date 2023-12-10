@@ -10,6 +10,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="movie_title">Movie Title</string>
     <string name="director">Director</string>
+    <string name="delete_movie_data">Delete Movie Data</string>
 
     <string-array name="rate">
         <item>1</item>
