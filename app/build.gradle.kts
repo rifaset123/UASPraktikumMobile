@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+
 android {
     namespace = "com.example.uaspraktikummobile"
     compileSdk = 34
@@ -37,6 +38,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -59,4 +61,7 @@ dependencies {
     // rounded image view
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation ("com.makeramen:roundedimageview:2.3.0")
+
+    // buat bottom sheet / open overlay
+    implementation("com.google.android.material:material:1.10.0")
 }

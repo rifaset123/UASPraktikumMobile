@@ -1,12 +1,22 @@
 package com.example.uaspraktikummobile
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.uaspraktikummobile.database.Movies
 import com.example.uaspraktikummobile.databinding.ActivityAddMoviesBinding
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,6 +29,10 @@ class AddMoviesActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private var store: StorageReference? = null
     private val db = FirebaseFirestore.getInstance()
+
+
+    private val channelId = "NOTIFICATION_CHANNEL_ID"
+    private val notifId = 90
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_movies)
@@ -121,6 +135,7 @@ class AddMoviesActivity : AppCompatActivity() {
                         addMovie(movie)
                     }
                     progression.dismiss()
+                    notifWithImage(downloadUrl)
                 }
             }
     }
@@ -132,5 +147,33 @@ class AddMoviesActivity : AppCompatActivity() {
             imageUri = data.data
             bindingAddMovies.imageMovie.setImageURI(imageUri)
         }
+    }
+
+    // notif
+    private fun notifWithImage(downloadUrl: String) {
+        val notifManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Download the image from Firebase Storage using Glide or any other image loading library
+        Glide.with(this@AddMoviesActivity)
+            .asBitmap()
+            .load(downloadUrl) // Use the downloadUrl here
+            .into(object : SimpleTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    // Build the notification with the downloaded image
+                    val builder = NotificationCompat.Builder(this@AddMoviesActivity, channelId)
+                        .setSmallIcon(R.drawable.logo_notflix_1)
+                        .setContentTitle("Notflix")
+                        .setContentText("Movie added successfully")
+                        .setStyle(
+                            NotificationCompat.BigPictureStyle()
+                                .bigPicture(resource)
+                        )
+                        .setAutoCancel(true)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+                    // Notify using the NotificationManager
+                    notifManager.notify(notifId, builder.build())
+                }
+            })
     }
 }

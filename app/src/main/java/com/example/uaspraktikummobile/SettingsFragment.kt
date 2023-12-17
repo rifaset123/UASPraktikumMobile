@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.uaspraktikummobile.databinding.FragmentHomeBinding
 import com.example.uaspraktikummobile.databinding.FragmentSettingsBinding
-import com.example.uaspraktikummobile.helper.Constant
 import com.example.uaspraktikummobile.helper.PreferencesHelper
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.concurrent.ExecutorService
@@ -58,10 +56,18 @@ class SettingsFragment : Fragment() {
                 val intentLogOut = Intent(requireContext(), LoginActivityFragment::class.java)
                 startActivity(intentLogOut)
             }
+
+            ButtonAboutUs.setOnClickListener{
+                ButtonAboutUs.isClickable = true
+                ButtonAboutUs.isEnabled = true
+                val intentAccount = Intent(requireContext(), AboutUsActivity::class.java)
+                startActivity(intentAccount)
+            }
+
             ButtonAccount.setOnClickListener{
                 ButtonAccount.isClickable = true
                 ButtonAccount.isEnabled = true
-                val intentAccount = Intent(requireContext(), AccountFragment::class.java)
+                val intentAccount = Intent(requireContext(), AccountActivity::class.java)
                 startActivity(intentAccount)
             }
         }

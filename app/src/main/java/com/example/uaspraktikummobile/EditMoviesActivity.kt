@@ -1,15 +1,26 @@
 package com.example.uaspraktikummobile
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.uaspraktikummobile.database.Movies
 import com.example.uaspraktikummobile.databinding.ActivityEditMoviesBinding
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,12 +35,16 @@ class EditMoviesActivity : AppCompatActivity() {
     private var updateId: String = ""
     private val db = FirebaseFirestore.getInstance()
 
+    private val channelId = "NOTIFICATION_CHANNEL_ID"
+    private val notifId = 90
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_movies)
 
         bindingEditMovies = ActivityEditMoviesBinding.inflate(layoutInflater)
         setContentView(bindingEditMovies.root)
+
 
         // buat nampilin film yang diklik
         val selectedMovie = intent.getParcelableExtra<Movies>("SELECTED_MOVIES")
@@ -67,6 +82,8 @@ class EditMoviesActivity : AppCompatActivity() {
                         )
                     )
                 }
+                notif()
+                Toast.makeText(this@EditMoviesActivity, "Movie updated successfully!", Toast.LENGTH_SHORT).show()
             }
             ButtonDeleteMovie.setOnClickListener{
                 if (updateId.isNotEmpty()) {
@@ -99,6 +116,11 @@ class EditMoviesActivity : AppCompatActivity() {
                 }
             }
         }
+        // fungsi dropdown rating
+        // buat dropdown rating
+        val rate = resources.getStringArray(R.array.rate)
+        val arrayAdapter = ArrayAdapter(this, R.layout.item_container_rating, rate)
+        bindingEditMovies.EditMovieRating.setAdapter(arrayAdapter)
     }
     // buat ngambil data setelah dipencet
     private fun updateWithSelectedMovie(selectedMovie: Movies) {
@@ -197,13 +219,79 @@ class EditMoviesActivity : AppCompatActivity() {
         store.putFile(imageUri)
             .addOnSuccessListener {
                 bindingEditMovies.imageMovie.setImageURI(null)
-                Toast.makeText(this, "Upload Image Success", Toast.LENGTH_SHORT).show()
                 store.downloadUrl.addOnSuccessListener { uri ->
                     val downloadUrl = uri.toString()
                     Log.d("Download URL", downloadUrl)
                     onSuccess.invoke(downloadUrl)
                     progression.dismiss()
+
+                    notifWithImage(imageUri.toString())
                 }
             }
+    }
+    // notif
+    private fun notif(){
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        }
+        else {
+            0
+        }
+        val intent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            flag
+        )
+        val builder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.logo_notflix_1)
+            .setContentTitle("Notflix")
+            .setContentText("Movie updated successfully!")
+            .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+        val notifManager = getSystemService(Context.NOTIFICATION_SERVICE) as
+                NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notifChannel = NotificationChannel(
+                channelId, // Id channel
+                "Notifku", // Nama channel notifikasi
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            with(notifManager) {
+                createNotificationChannel(notifChannel)
+                notify(notifId, builder.build())
+            }
+        }
+        else {
+            notifManager.notify(notifId, builder.build())
+        }
+    }
+    private fun notifWithImage(downloadUrl: String) {
+        val notifManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Download the image from Firebase Storage using Glide or any other image loading library
+        Glide.with(this@EditMoviesActivity)
+            .asBitmap()
+            .load(downloadUrl) // Use the downloadUrl here
+            .into(object : SimpleTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    // Build the notification with the downloaded image
+                    val builder = NotificationCompat.Builder(this@EditMoviesActivity, channelId)
+                        .setSmallIcon(R.drawable.logo_notflix_1)
+                        .setContentTitle("Notflix")
+                        .setContentText("Images updated successfully")
+                        .setStyle(
+                            NotificationCompat.BigPictureStyle()
+                                .bigPicture(resource)
+                        )
+                        .setAutoCancel(true)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+                    // Notify using the NotificationManager
+                    notifManager.notify(notifId, builder.build())
+                }
+            })
     }
 }

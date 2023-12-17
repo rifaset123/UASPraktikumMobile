@@ -137,6 +137,8 @@
                     android:drawableStart="@drawable/rate"
                     android:drawablePadding="10dp"
                     android:hint="Rating"
+                    android:focusable="true"
+                    android:enabled="true"
                     android:layout_weight="1"
                     android:inputType="none"
                     android:textSize="16sp" />

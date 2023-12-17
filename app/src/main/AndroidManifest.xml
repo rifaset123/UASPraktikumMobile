@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -13,12 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UASPraktikumMobile"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" />
         <activity
             android:name=".adapter.RvMoviesGOATAdapter"
             android:exported="false" />
         <activity
-            android:name=".DetailMovieActivity"
+            android:name=".AboutUsActivity"
             android:exported="false" />
         <activity
             android:name=".AddMoviesActivity"
@@ -34,7 +39,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivityFragment"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

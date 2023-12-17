@@ -1,5 +1,7 @@
 package com.example.uaspraktikummobile
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,17 +60,14 @@ class HomeFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         executorService = Executors.newSingleThreadExecutor()
-        bindingPublic = FragmentHomeBinding.inflate(layoutInflater)
 
         // untuk Trending Movie
         rvAdapter = RvMoviesAdapter(TrendingMovie,
-            onItemClick = { movie ->
+            onItemClick = {movie ->
                 executorService.execute {
-                    val position = TrendingMovie.indexOf(movie)
-                    val selectedMovies = TrendingMovie[position] // posisi gambar yang diklik
-                    val intentToDetail = Intent(requireContext(), DetailMovieActivity::class.java)
-                    intentToDetail.putExtra("SELECTED_MOVIES", selectedMovies)
-                    startActivityForResult(intentToDetail, 3)
+                    // buat bottom sheet
+                    val bottomSheetFragment = BottomSheetFragment.newInstance(movie)
+                    bottomSheetFragment.show(requireActivity().supportFragmentManager, bottomSheetFragment.tag)
                 }
             },
         )
@@ -75,11 +75,9 @@ class HomeFragment : Fragment() {
         rvAdapterGOAT = RvMoviesGOATAdapter(GOATMovie,
             onItemClick = { movie ->
                 executorService.execute {
-                    val position = GOATMovie.indexOf(movie)
-                    val selectedMovies = GOATMovie[position] // posisi gambar yang diklik
-                    val intentToDetail = Intent(requireContext(), DetailMovieActivity::class.java)
-                    intentToDetail.putExtra("SELECTED_MOVIES", selectedMovies)
-                    startActivityForResult(intentToDetail, 4)
+                    // buat bottom sheet
+                    val bottomSheetFragment = BottomSheetFragment.newInstance(movie)
+                    bottomSheetFragment.show(requireActivity().supportFragmentManager, bottomSheetFragment.tag)
                 }
             },
         )
