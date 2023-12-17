@@ -31,8 +31,6 @@ class SignInFragment : Fragment() {
     private var param2: String? = null
     private lateinit var bindFragmentSignIn: FragmentSignInBinding
     private val db = FirebaseFirestore.getInstance()
-    private lateinit var UsernameEdit: TextInputEditText
-    private lateinit var PasswordEdit: TextInputEditText
     lateinit var sharedPref: PreferencesHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +46,6 @@ class SignInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         bindFragmentSignIn = FragmentSignInBinding.inflate(inflater, container, false)
         return bindFragmentSignIn.root
     }
@@ -58,7 +55,7 @@ class SignInFragment : Fragment() {
         val usernameEdit = bindFragmentSignIn.EditUsernameSignIn
         val passwordEdit = bindFragmentSignIn.EditPasswordSignIn
 
-        bindFragmentSignIn.ButtonSignIn.setOnClickListener() {
+        bindFragmentSignIn.ButtonSignIn.setOnClickListener {
             val usr = usernameEdit.text.toString()
             val pw = passwordEdit.text.toString()
 
@@ -73,14 +70,14 @@ class SignInFragment : Fragment() {
                     .addOnSuccessListener { task ->
                         if (!task.isEmpty) {
                             // User exists and password matches
-                            val userDocument = task.documents[0] // Assuming there's only one matching document
+                            val userDocument = task.documents[0]
                             val storedPassword = userDocument.getString("password")
                             val isAdmin = userDocument.getBoolean("isAdmin") ?: true
 
                             if (pw == storedPassword) {
                                 // Password matches, proceed with login
                                 if (isAdmin) {
-                                    // User is an admin, proceed with admin activity
+                                    // if user is admin
                                     val intentAdmin = Intent(requireContext(), MainActivityAdmin::class.java)
                                     startActivity(intentAdmin)
                                     Toast.makeText(requireContext(), "Admin Sign In Successfully.", Toast.LENGTH_SHORT).show()
@@ -106,10 +103,7 @@ class SignInFragment : Fragment() {
             }
         }
         bindFragmentSignIn.txtSignUp.setOnClickListener {
-            // Assuming viewPager is your ViewPager instance
             val viewPager = requireActivity().findViewById<ViewPager>(R.id.viewPagerLogin)
-
-            // Assuming signUpTabIndex is the index of your SignUp tab in the ViewPager
             val signUpTabIndex = 1 // Change this to the correct index
 
             viewPager.currentItem = signUpTabIndex

@@ -115,7 +115,8 @@ class AddMoviesActivity : AppCompatActivity() {
                             title = title,
                             director = director,
                             description = description,
-                            rating = rating
+                            rating = rating,
+                            isTrending = false
                         )
                         addMovie(movie)
                     }

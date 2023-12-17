@@ -28,4 +28,9 @@ class PreferencesHelper (context: Context){
     fun getBoolean(key: String): Boolean {
         return sharedPref.getBoolean(key, false)
     }
+
+    fun clear(){ // hapus pref
+        editor.clear()
+            .apply()
+    }
 }

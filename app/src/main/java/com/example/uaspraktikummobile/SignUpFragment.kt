@@ -102,11 +102,8 @@ class SignUpFragment : Fragment() {
                 }
             }
             bindFragmentSignUp.txtSignIn.setOnClickListener {
-                // Assuming viewPager is your ViewPager instance
                 val viewPager = requireActivity().findViewById<ViewPager>(R.id.viewPagerLogin)
-
-                // Assuming signUpTabIndex is the index of your SignUp tab in the ViewPager
-                val signUpTabIndex = 0 // Change this to the correct index
+                val signUpTabIndex = 0
 
                 viewPager.currentItem = signUpTabIndex
             }

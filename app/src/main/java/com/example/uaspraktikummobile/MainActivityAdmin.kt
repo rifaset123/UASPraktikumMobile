@@ -4,11 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.RecyclerView
+import com.example.uaspraktikummobile.adapter.RvAdminAdapter
 import com.example.uaspraktikummobile.database.Movies
 import com.example.uaspraktikummobile.databinding.ActivityMainAdminBinding
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,10 +20,10 @@ class MainActivityAdmin : AppCompatActivity() {
     private val reportCollectionRef = db.collection("movies")
     private lateinit var executorService: ExecutorService
     private lateinit var bindingAdmin: ActivityMainAdminBinding
-    private val reportListLiveData: MutableLiveData<List<Movies>> by lazy {
+    private val movieListLiveData: MutableLiveData<List<Movies>> by lazy {
         MutableLiveData<List<Movies>>()
     }
-    private val listReports = mutableListOf<Movies>() // Tambahkan list untuk menyimpan data yang akan ditampilkan
+    private val listMovies = mutableListOf<Movies>() // Tambahkan list untuk menyimpan data yang akan ditampilkan
     private lateinit var rvAdapter: RvAdminAdapter // Deklarasikan adapter di sini
     private var store: StorageReference? = null
 
@@ -34,23 +33,24 @@ class MainActivityAdmin : AppCompatActivity() {
         bindingAdmin = ActivityMainAdminBinding.inflate(layoutInflater)
         setContentView(bindingAdmin.root)
 
-        rvAdapter = RvAdminAdapter(listReports,
+        rvAdapter = RvAdminAdapter(listMovies,
             onItemClick = { movie ->
                 executorService.execute {
-                    // Inside onItemClick in your notesAdapter
-                    val position = listReports.indexOf(movie)
-                    val selectedMovies = listReports[position] // Assuming position is the clicked item position
+                    val position = listMovies.indexOf(movie)
+                    val selectedMovies = listMovies[position] // posisi gambar yang diklik
                     val intent = Intent(this@MainActivityAdmin, EditMoviesActivity::class.java)
                     intent.putExtra("SELECTED_MOVIES", selectedMovies)
                     startActivityForResult(intent, 2)
                 }
             },
             onItemLongClick = { movie ->
-                deleteMovies(movie = movie) })
+                deleteMovies(movie = movie) }
+        )
+
 
         with(bindingAdmin){
             MyRecyclerView.apply {
-                layoutManager = GridLayoutManager(context, 2) // mengatur grid
+                layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                 adapter = rvAdapter
             }
         }
@@ -69,10 +69,10 @@ class MainActivityAdmin : AppCompatActivity() {
         observeMoviesChanges()
     }
     private fun observeMovies() {
-        reportListLiveData.removeObservers(this) // Hapus observer sebelum menambahkan yang baru
-        reportListLiveData.observe(this) { report->
-            listReports.clear()
-            listReports.addAll(report)
+        movieListLiveData.removeObservers(this) // Hapus observer sebelum menambahkan yang baru
+        movieListLiveData.observe(this) { report->
+            listMovies.clear()
+            listMovies.addAll(report)
             runOnUiThread {
                 rvAdapter.notifyDataSetChanged()
             }
@@ -86,7 +86,7 @@ class MainActivityAdmin : AppCompatActivity() {
             }
             val reports = snapshots?.toObjects(Movies::class.java)
             if (reports != null) {
-                reportListLiveData.postValue(reports)
+                movieListLiveData.postValue(reports)
             }
         }
     }

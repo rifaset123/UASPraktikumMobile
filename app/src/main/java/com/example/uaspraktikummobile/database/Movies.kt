@@ -9,7 +9,8 @@ data class Movies(
     var title: String = "",
     var director: String = "",
     var description: String = "",
-    var rating: String = ""
+    var rating: String = "",
+    var isTrending: Boolean = false
 ): Parcelable {
     // agar bisa di edit
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -19,6 +20,7 @@ data class Movies(
         parcel.writeString(director)
         parcel.writeString(description)
         parcel.writeString(rating)
+        parcel.writeString(isTrending.toString())
     }
 
     override fun describeContents(): Int {

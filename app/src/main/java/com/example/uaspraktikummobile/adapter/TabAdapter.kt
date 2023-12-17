@@ -1,8 +1,10 @@
-package com.example.uaspraktikummobile
+package com.example.uaspraktikummobile.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.uaspraktikummobile.SignInFragment
+import com.example.uaspraktikummobile.SignUpFragment
 
 class TabAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT

@@ -43,23 +43,33 @@ class EditMoviesActivity : AppCompatActivity() {
                 selectImage()
             }
             ButtonConfirmEditMovie.setOnClickListener {
-                imageUri?.let { it1 ->
-                    uploadImageAndUpdateMovie(it1) { downloadUrl ->
+                if (imageUri != null) {
+                    // Jika gambar diganti, upload gambar dan update film
+                    uploadImageAndUpdateMovie(imageUri!!) { downloadUrl ->
                         updateMovie(
                             Movies(
                                 imagePath = downloadUrl,
                                 title = EditMovieTitle.text.toString(),
                                 director = EditMovieDirector.text.toString(),
                                 rating = EditMovieRating.text.toString(),
-                                description = EditMovieDescription.text.toString()
+                                description = EditMovieDescription.text.toString(),
                             )
                         )
                     }
+                } else {
+                    // Jika gambar tidak diganti, langsung update film tanpa mengunggah gambar
+                    updateMovie(
+                        Movies(
+                            title = EditMovieTitle.text.toString(),
+                            director = EditMovieDirector.text.toString(),
+                            rating = EditMovieRating.text.toString(),
+                            description = EditMovieDescription.text.toString(),
+                        )
+                    )
                 }
             }
             ButtonDeleteMovie.setOnClickListener{
                 if (updateId.isNotEmpty()) {
-                    // Get the document reference for the movie to delete
                     val movieCollectionRef = db.collection("movies")
                     val movieRef = movieCollectionRef.document(updateId)
 
@@ -67,7 +77,6 @@ class EditMoviesActivity : AppCompatActivity() {
                     movieRef.delete()
                         .addOnSuccessListener {
                             Log.d("EditMoviesActivity", "Movie deleted successfully!")
-                            // Optionally, delete the corresponding image from Firebase Storage
                             // (Assuming you have stored the image URLs in the "imagePath" field)
                             val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(selectedMovie?.imagePath ?: "")
                             storageRef.delete().addOnSuccessListener {
@@ -122,18 +131,38 @@ class EditMoviesActivity : AppCompatActivity() {
                 "rating" to movie.rating,
                 "description" to movie.description,
             )
+            val updatesNoPict = mapOf(
+                "title" to movie.title,
+                "director" to movie.director,
+                "rating" to movie.rating,
+                "description" to movie.description,
+            )
 
             // Update the document with the provided data
-            movieRef.update(updates)
-                .addOnSuccessListener {
-                    Log.d("MainActivity", "Movie updated successfully!")
-                    val intent = Intent(this@EditMoviesActivity, MainActivityAdmin::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-                .addOnFailureListener { e ->
-                    Log.w("MainActivity", "Error updating Movie", e)
-                }
+            if (imageUri != null){
+                movieRef.update(updates)
+                    .addOnSuccessListener {
+                        Log.d("MainActivity", "Movie updated successfully!")
+                        val intent = Intent(this@EditMoviesActivity, MainActivityAdmin::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("MainActivity", "Error updating Movie", e)
+                    }
+            } else {
+                movieRef.update(updatesNoPict)
+                    .addOnSuccessListener {
+                        Log.d("MainActivity", "Movie updated successfully!")
+                        val intent = Intent(this@EditMoviesActivity, MainActivityAdmin::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("MainActivity", "Error updating Movie", e)
+                    }
+
+            }
         } else {
             Log.e("UpdateMovie", "Error updating Movie: updateId is empty!")
         }

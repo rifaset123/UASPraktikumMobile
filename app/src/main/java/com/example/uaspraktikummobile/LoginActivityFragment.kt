@@ -2,9 +2,7 @@ package com.example.uaspraktikummobile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
+import com.example.uaspraktikummobile.adapter.TabAdapter
 import com.example.uaspraktikummobile.databinding.ActivityLoginFragmentBinding
 
 class LoginActivityFragment : AppCompatActivity() {

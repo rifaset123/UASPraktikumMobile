@@ -33,14 +33,28 @@
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/roundedImageView" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/MyRecyclerView"
-        android:layout_width="409dp"
+        android:layout_width="350dp"
         android:layout_height="633dp"
         android:layout_marginTop="70dp"
         android:paddingBottom="70dp"
         app:layout_constraintBottom_toTopOf="@+id/BottomHelper"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextWelcomeAdmin"
         tools:listitem="@layout/item_container_movies_admin" />
