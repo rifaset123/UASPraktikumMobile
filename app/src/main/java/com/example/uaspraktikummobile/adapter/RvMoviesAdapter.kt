@@ -12,7 +12,7 @@ import com.example.uaspraktikummobile.database.Movies
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RvMoviesAdapter(
-    private val listMovie: List<Movies>,
+    private var listMovie: List<Movies>,
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val onItemClick: (Movies) -> Unit,
 ) : RecyclerView.Adapter<RvMoviesAdapter.MovieViewHolder>() {
@@ -55,5 +55,9 @@ class RvMoviesAdapter(
                 }
             }
         }
+    }
+    fun updateData(newMovies: List<Movies>) {
+        listMovie = newMovies
+        notifyDataSetChanged()
     }
 }

@@ -13,6 +13,7 @@ import com.example.uaspraktikummobile.helper.Constant
 import com.example.uaspraktikummobile.helper.PreferencesHelper
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestoreSettings
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,6 +55,13 @@ class SignInFragment : Fragment() {
 
         val usernameEdit = bindFragmentSignIn.EditUsernameSignIn
         val passwordEdit = bindFragmentSignIn.EditPasswordSignIn
+
+        // karena kita wajib pakek room
+        // Ini agar tidak ada offline cache dari firestore
+        val settings = firestoreSettings {
+            isPersistenceEnabled = false //default nya trye
+        }
+        db.firestoreSettings = settings
 
         bindFragmentSignIn.ButtonSignIn.setOnClickListener {
             val usr = usernameEdit.text.toString()

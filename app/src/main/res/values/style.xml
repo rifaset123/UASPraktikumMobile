@@ -4,4 +4,10 @@
         <item name="colorControlActivated">@color/colorRatingActive</item>
         <item name="colorControlNormal">@color/colorRatingInactive</item>
     </style>
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:colorPrimary">@color/red</item>
+        <item name="android:textColorPrimary">@color/red</item>
+        <item name="android:colorAccent">@color/red</item>
+    </style>
+
 </resources>

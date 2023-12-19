@@ -25,7 +25,6 @@ class MainActivityAdmin : AppCompatActivity() {
     }
     private val listMovies = mutableListOf<Movies>() // Tambahkan list untuk menyimpan data yang akan ditampilkan
     private lateinit var rvAdapter: RvAdminAdapter // Deklarasikan adapter di sini
-    private var store: StorageReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,27 +99,4 @@ class MainActivityAdmin : AppCompatActivity() {
                 Log.d("MainActivity", "Error deleting movie: ", it)
             }
     }
-
-//    private fun loadImagesPath() {
-//        for (movie in listReports) {
-//            val imagePath = movie.imagePath
-//            val imageRV: ImageView = findViewById(R.id.imageMovieDisplay)
-//
-//            // Construct the StorageReference for the image
-//            val imageRef = store?.child(imagePath)
-//
-//            // Download the image and load it into your app (you can use any image loading library here)
-//            imageRef?.downloadUrl?.addOnSuccessListener { uri ->
-//                // The image URL is available in the 'uri' variable
-//                val imageUrl = uri.toString()
-//                // Gunakan Glide untuk memuat gambar ke RoundedImageView
-//                Glide.with(this)
-//                    .load(imageUrl)
-//                    .into(imageRV)
-//            }?.addOnFailureListener {
-//                // Handle failure
-//                Log.d("MainActivity", "Error downloading image: $it")
-//            }
-//        }
-//    }
 }

@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 
@@ -64,4 +65,12 @@ dependencies {
 
     // buat bottom sheet / open overlay
     implementation("com.google.android.material:material:1.10.0")
+
+    // room
+    implementation ("androidx.room:room-runtime:2.4.0") // Use the latest version
+    kapt( "androidx.room:room-compiler:2.4.0")
+
+    // splash screen
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.23")
+
 }

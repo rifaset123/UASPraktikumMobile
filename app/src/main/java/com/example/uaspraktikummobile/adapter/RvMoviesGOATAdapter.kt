@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.uaspraktikummobile.R
 import com.example.uaspraktikummobile.database.Movies
+import com.example.uaspraktikummobile.room.MoviesRoom
 
 class RvMoviesGOATAdapter (
-    private val listMovie: List<Movies>,
+    private var listMovie: List<Movies>,
     private val onItemClick: (Movies) -> Unit,
     ) : RecyclerView.Adapter<RvMoviesGOATAdapter.MovieViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_container_movies_goat, parent, false)
         return MovieViewHolder(view)
@@ -29,6 +31,7 @@ class RvMoviesGOATAdapter (
         Glide.with(holder.itemView.context)
             .load(listMovie[position].imagePath)
             .into(holder.imageRV)
+
     }
 
     override fun getItemCount(): Int {
@@ -48,5 +51,9 @@ class RvMoviesGOATAdapter (
                 }
             }
         }
+    }
+    fun updateData(newMovies: List<Movies>) {
+        listMovie = newMovies
+        notifyDataSetChanged()
     }
 }
