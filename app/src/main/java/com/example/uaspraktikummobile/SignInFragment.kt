@@ -83,25 +83,25 @@ class SignInFragment : Fragment() {
                             val isAdmin = userDocument.getBoolean("isAdmin") ?: true
 
                             if (pw == storedPassword) {
-                                // Password matches, proceed with login
+                                // pasword cocok
                                 if (isAdmin) {
-                                    // if user is admin
+                                    // jika user admin
                                     val intentAdmin = Intent(requireContext(), MainActivityAdmin::class.java)
                                     startActivity(intentAdmin)
                                     Toast.makeText(requireContext(), "Admin Sign In Successfully.", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    // shared
+                                    // shared untuk public
                                     saveSession(usernameEdit.text.toString(), passwordEdit.text.toString())
                                     val intentRegular = Intent(requireContext(), MainActivity::class.java)
                                     startActivity(intentRegular)
                                     Toast.makeText(requireContext(), "User Sign In Successfully.", Toast.LENGTH_SHORT).show()
                                 }
                             } else {
-                                // Password doesn't match
+                                // password gacocok
                                 Toast.makeText(requireContext(), "Sign In Failed, Password doesn't match in our system", Toast.LENGTH_SHORT).show()
                             }
                         } else {
-                            // User does not exist or password doesn't match
+                            // user gada
                             Toast.makeText(requireContext(), "Sign In Failed, Password doesn't match in our system", Toast.LENGTH_SHORT).show()
                         }
                     }.addOnFailureListener {
@@ -111,8 +111,9 @@ class SignInFragment : Fragment() {
             }
         }
         bindFragmentSignIn.txtSignUp.setOnClickListener {
+            // supaya bisa pindah ke tab sign up
             val viewPager = requireActivity().findViewById<ViewPager>(R.id.viewPagerLogin)
-            val signUpTabIndex = 1 // Change this to the correct index
+            val signUpTabIndex = 1
 
             viewPager.currentItem = signUpTabIndex
         }
@@ -121,6 +122,7 @@ class SignInFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         // pengecekan apakah udh login
+        // jika sudah login, langsung pindah ke main activity
         if (sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
             startActivity(Intent(requireContext(), MainActivity::class.java))
             requireActivity().finish()
@@ -128,6 +130,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun saveSession(username: String, password: String) {
+        // simpan username dan password ke shared preferences
         sharedPref.put(Constant.PREF_USERNAME, username)
         sharedPref.put(Constant.PREF_PASSWORD, password)
         sharedPref.put(Constant.PREF_IS_LOGIN, true)

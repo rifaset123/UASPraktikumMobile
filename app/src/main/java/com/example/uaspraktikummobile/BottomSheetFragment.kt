@@ -37,13 +37,10 @@ class BottomSheetFragment : BottomSheetDialogFragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve the movie object from arguments
+        // film yang diklik
         val selectedMovie = arguments?.getParcelable<Movies>(ARG_SELECTED_MOVIE)
 
-        // Use the selectedMovie object to populate your BottomSheet UI
         if (selectedMovie != null) {
-            // Populate your BottomSheet UI with the selected movie details
-            // Example: display movie title in a TextView
             val titleTextView: TextView = view.findViewById(R.id.TxtMovieTitle)
             val directorTextView: TextView = view.findViewById(R.id.TxtDirector)
             val storyTextView: TextView = view.findViewById(R.id.TxtStoryline)

@@ -139,7 +139,7 @@ class AddMoviesActivity : AppCompatActivity() {
                 }
             }
     }
-    // nyambungin request code ke image
+    // nerima preview image dgn requestCode
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

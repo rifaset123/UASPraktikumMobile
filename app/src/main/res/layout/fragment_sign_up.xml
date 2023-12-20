@@ -93,6 +93,7 @@
                     style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
                     android:drawableStart="@drawable/account"
                     android:drawablePadding="10dp"
+                    android:maxLength="11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"

@@ -68,6 +68,7 @@ class MainActivityAdmin : AppCompatActivity() {
         observeMoviesChanges()
     }
     private fun observeMovies() {
+        // untuk ngeliat data firebase
         movieListLiveData.removeObservers(this) // Hapus observer sebelum menambahkan yang baru
         movieListLiveData.observe(this) { report->
             listMovies.clear()
@@ -78,6 +79,7 @@ class MainActivityAdmin : AppCompatActivity() {
         }
     }
     private fun observeMoviesChanges() {
+        // untuk mengamati perubahan pada listMovies
         reportCollectionRef.addSnapshotListener { snapshots, error->
             if (error != null) {
                 Log.d("MainActivity", "Error listening for budget changes: ", error)

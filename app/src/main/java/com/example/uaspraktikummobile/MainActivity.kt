@@ -11,8 +11,6 @@ import com.example.uaspraktikummobile.helper.Constant
 import com.example.uaspraktikummobile.helper.PreferencesHelper
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var sharedPref: PreferencesHelper
     private lateinit var bindingPublicFragment: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

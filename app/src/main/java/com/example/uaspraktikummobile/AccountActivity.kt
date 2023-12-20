@@ -27,7 +27,6 @@ class AccountActivity : AppCompatActivity() {
         val sessionUsername  = sharedPref.getString(Constant.PREF_USERNAME)
 
         if (sessionUsername != null) {
-            // Query the user in Firebase based on the session username
             val userQuery = db.collection("users")
                 .whereEqualTo("username", sessionUsername)
                 .get()

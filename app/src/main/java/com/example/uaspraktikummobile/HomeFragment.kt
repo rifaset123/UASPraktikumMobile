@@ -163,6 +163,7 @@ class HomeFragment : Fragment() {
                 }
             }
     }
+    // nampilin dari firebase
     private fun getAllMovies() {
         observeMoviesChanges()
     }
@@ -198,19 +199,20 @@ class HomeFragment : Fragment() {
             updateAdapterData(movies)
         }
     }
+    // agar dapat terintegrasi dan selaras dengan firebase
     private fun updateAdapterData(roomMovies: List<MoviesRoom>) {
         bindingPublic.root.post {
-            // Log TrendingMovieRoom
+            // TrendingMovieRoom
             val trendingMovies = roomMovies.filter { it.trending }
             TrendingMovieRoom.clear()
             TrendingMovieRoom.addAll(trendingMovies)
 
-            // Log GOATMovieRoom
+            // GOATMovieRoom
             val goatMovies = roomMovies.filter { !it.trending }
             GOATMovieRoom.clear()
             GOATMovieRoom.addAll(goatMovies)
 
-            // Merge data from both sources into a single list
+            // gabungin kedua data ke satu room
             val mergedDataList = mutableListOf<Movies>().apply {
                 addAll(TrendingMovieRoom.map { roomMovie ->
                     Movies(

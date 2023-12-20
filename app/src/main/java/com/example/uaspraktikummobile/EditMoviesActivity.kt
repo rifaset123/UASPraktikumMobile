@@ -130,7 +130,7 @@ class EditMoviesActivity : AppCompatActivity() {
             EditMovieDescription.setText(selectedMovie.description)
             EditMovieRating.setText(selectedMovie.rating)
 
-            // Load the image using Glide
+            // nampilin gambar
             val imagePath = selectedMovie.imagePath
             if (!imagePath.isNullOrEmpty()) {
                 Glide.with(this@EditMoviesActivity)
@@ -196,7 +196,7 @@ class EditMoviesActivity : AppCompatActivity() {
         intentImage.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(intentImage, 100)
     }
-    // preview image dgn requestCode
+    // nerima preview image dgn requestCode
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
